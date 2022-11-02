@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dades-dag-sandbox"
+version = "0.1.0"
+description = ""
+authors = ["pol <pol.monso@somenergia.coop>"]
+license = "GPLv3"
+readme = "README.md"
+packages = [{include = "dades_dag_sandbox"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.85.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
