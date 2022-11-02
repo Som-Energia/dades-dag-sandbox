@@ -46,7 +46,7 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
         task_id='dummy_task',
         docker_conn_id='somenergia_registry',
         image='{{ conn.somenergia_registry.host }}/dades-dag-sandbox-requirements:latest',
-        working_dir='/repos/somenergia-kpis',
+        working_dir='/repos/dades-dag-sandbox',
         command='python3 -m hello.py "{{ data_interval_start }}" "{{ data_interval_end }}" \
                 "{{ var.value.puppis_prod_db }}" "{{ var.value.helpscout_api_id }}" "{{ var.value.helpscout_api_secret }}"',
         docker_url=Variable.get("generic_moll_url"),
