@@ -30,7 +30,7 @@ nfs_config = {
 driver_config = DriverConfig(name='local', options=nfs_config)
 mount_nfs = Mount(source="local", target="/repos", type="volume", driver_config=driver_config)
 
-with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_interval='@hourly', catchup=True, tags=["Helpscout", "Extract"], default_args=args) as dag:
+with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_interval='@hourly', catchup=False, tags=["Helpscout", "Extract"], default_args=args) as dag:
 
     repo_github_name = 'dades-dag-sandbox'
 
