@@ -63,5 +63,4 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
     task_branch_pull_ssh >> task_update_image
     task_branch_pull_ssh >> get_conversations_task
     task_branch_pull_ssh >> task_remove_image
-    #task_branch_pull_ssh >> task_update_image
     task_remove_image >> task_image_build >> get_conversations_task
