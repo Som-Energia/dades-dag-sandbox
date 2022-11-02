@@ -34,14 +34,12 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
 
     repo_github_name = 'dades-dag-sandbox'
 
-    task_branch_pull_ssh = build_branch_pull_ssh_task(dag=dag, task_name='dummy_task', repo_github_name=repo_github_name)
-    task_git_clone = build_git_clone_ssh_task(dag=dag, repo_github_name=repo_github_name)
     task_check_repo = build_check_repo_task(dag=dag, repo_github_name=repo_github_name)
-    task_image_build = build_image_build_task(dag=dag, repo_github_name=repo_github_name)
-    task_remove_image = build_remove_image_task(dag=dag, repo_github_name=repo_github_name)
+    task_git_clone = build_git_clone_ssh_task(dag=dag, repo_github_name=repo_github_name)
+    task_branch_pull_ssh = build_branch_pull_ssh_task(dag=dag, task_name='dummy_task', repo_github_name=repo_github_name)
     task_update_image = build_update_image_task(dag=dag, repo_name=repo_github_name)
 
-    get_conversations_task = DockerOperator(
+    dummy_task = DockerOperator(
         api_version='auto',
         task_id='dummy_task',
         docker_conn_id='somenergia_registry',
@@ -61,6 +59,5 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
     task_check_repo >> task_branch_pull_ssh
     task_git_clone >> task_update_image
     task_branch_pull_ssh >> task_update_image
-    task_branch_pull_ssh >> get_conversations_task
-    task_branch_pull_ssh >> task_remove_image
-    task_remove_image >> task_image_build >> get_conversations_task
+    task_branch_pull_ssh >> dummy_task
+    task_update_image >> dummy_task
