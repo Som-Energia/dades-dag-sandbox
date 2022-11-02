@@ -57,7 +57,7 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
 
     task_check_repo >> task_git_clone
     task_check_repo >> task_branch_pull_ssh
-    task_git_clone >> task_update_image
+    #task_git_clone >> task_update_image
     task_branch_pull_ssh >> task_update_image
     task_branch_pull_ssh >> dummy_task
     task_update_image >> dummy_task
