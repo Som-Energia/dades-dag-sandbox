@@ -32,12 +32,12 @@ mount_nfs = Mount(source="local", target="/repos", type="volume", driver_config=
 
 with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_interval='@hourly', catchup=False, tags=["Helpscout", "Extract"], default_args=args) as dag:
 
-    repo_github_name = 'dades-dag-sandbox'
+    repo_name = 'dades-dag-sandbox'
 
-    task_check_repo = build_check_repo_task(dag=dag, repo_github_name=repo_github_name)
-    task_git_clone = build_git_clone_ssh_task(dag=dag, repo_github_name=repo_github_name)
-    task_branch_pull_ssh = build_branch_pull_ssh_task(dag=dag, task_name='dummy_task', repo_github_name=repo_github_name)
-    task_update_image = build_update_image_task(dag=dag, repo_name=repo_github_name)
+    task_check_repo = build_check_repo_task(dag=dag, repo_name=repo_name)
+    task_git_clone = build_git_clone_ssh_task(dag=dag, repo_name=repo_name)
+    task_branch_pull_ssh = build_branch_pull_ssh_task(dag=dag, task_name='dummy_task', repo_name=repo_name)
+    task_update_image = build_update_image_task(dag=dag, repo_name=repo_name)
 
     dummy_task = DockerOperator(
         api_version='auto',
