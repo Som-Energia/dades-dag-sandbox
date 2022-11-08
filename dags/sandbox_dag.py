@@ -43,8 +43,8 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
         api_version='auto',
         task_id='dummy_task',
         docker_conn_id='somenergia_registry',
-        image='{{ conn.somenergia_registry.host }}/dades-dag-sandbox-requirements:latest',
-        working_dir='/repos/dades-dag-sandbox',
+        image='{{ conn.somenergia_registry.host }}/{}-requirements:latest'.format(repo_name),
+        working_dir=f'/repos/{repo_name}',
         command='python3 -m hello "{{ data_interval_start }}" "{{ data_interval_end }}" \
                 "{{ var.value.puppis_prod_db }}" "{{ var.value.helpscout_api_id }}" "{{ var.value.helpscout_api_secret }}"',
         docker_url=Variable.get("generic_moll_url"),
