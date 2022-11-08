@@ -3,8 +3,6 @@ from airflow.providers.docker.operators.docker import DockerOperator
 from util_tasks.t_branch_pull_ssh import build_branch_pull_ssh_task
 from util_tasks.t_git_clone_ssh import build_git_clone_ssh_task
 from util_tasks.t_check_repo import build_check_repo_task
-from util_tasks.t_image_build import build_image_build_task
-from util_tasks.t_remove_image import build_remove_image_task
 from util_tasks.t_update_docker_image import build_update_image_task
 from docker.types import Mount, DriverConfig
 from datetime import datetime, timedelta
@@ -43,7 +41,7 @@ with DAG(dag_id='dades_sandbox_dag', start_date=datetime(2020,3,20), schedule_in
         api_version='auto',
         task_id='dummy_task',
         docker_conn_id='somenergia_registry',
-        image='{{ conn.somenergia_registry.host }}/{}-requirements:latest'.format(repo_name),
+        image='{}/{}-requirements:latest'.format('{{ conn.somenergia_registry.host }}',repo_name),
         working_dir=f'/repos/{repo_name}',
         command='python3 -m hello "{{ data_interval_start }}" "{{ data_interval_end }}" \
                 "{{ var.value.puppis_prod_db }}" "{{ var.value.helpscout_api_id }}" "{{ var.value.helpscout_api_secret }}"',
