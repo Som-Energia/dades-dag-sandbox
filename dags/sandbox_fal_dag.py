@@ -47,7 +47,8 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     print(parsed_dbapi)
     assert parsed_dbapi
 
-    userinfo,hostinfo = parsed_dbapi.netloc.split('@')
+    # userinfo,hostinfo = parsed_dbapi.netloc.split('@')
+    userinfo,hostinfo = "somuser:eew@puppis.somenergia.lan:5432".split('@')
 
     db_host, db_port = hostinfo.split(':')
     db_user, db_password = userinfo.split(':')
