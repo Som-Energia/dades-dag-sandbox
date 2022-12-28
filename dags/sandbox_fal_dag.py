@@ -41,6 +41,7 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
 
     # fragile dbapi to user-password combination
     parsed_dbapi = urlparse('{{ var.value.puppis_sandbox_db }}')
+    print(parsed_dbapi)
     assert parsed_dbapi
 
     userinfo,hostinfo = parsed_dbapi.netloc.split('@')
