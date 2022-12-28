@@ -1,0 +1,16 @@
+dbt_dades_sandbox:
+  outputs:
+    pre_with_fal:
+      type: fal
+      db_profile: pre # This points to your main adapter
+    pre:
+      type: postgres
+      threads: 1
+      host: puppis.somenergia.lan
+      port: 5432
+      user: "{{ env_var('DBUSER') }}"
+      password: "{{ env_var('DBPASSWORD') }}"
+      dbname: sandbox
+      schema: dbt_pol
+
+  target: pre

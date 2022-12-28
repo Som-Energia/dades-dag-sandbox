@@ -7,11 +7,6 @@ sources:
     tables:
       - name: energy_budget
 
-  - name: dades_pol
-    schema: dbt_pol
-    tables:
-      - name: average
-
 models:
   - name: my_first_dbt_model
     description: "A starter dbt model"
