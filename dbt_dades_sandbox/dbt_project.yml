@@ -24,6 +24,11 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# fal configuration
+vars:
+  # Add this to your dbt_project.yml
+  fal-models-paths: ["fal_models"]
+
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -34,5 +39,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_dades_sandbox:
     # Config indicated by + and applies to all files under models/example/
-    example:
+    fal_experiment:
       +materialized: view

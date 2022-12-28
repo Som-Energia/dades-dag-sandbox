@@ -15,13 +15,27 @@ You should then check `~/.dbt/profiles.yml` to check your database connections o
 under the `dbt_dades_sandbox` section.
 
 
+To add fal you have to add another target in your profiles.yml. [Quickstart](https://docs.fal.ai/dbt-fal/quickstart)
 
+```yaml
+    pre_with_fal:
+      type: fal
+      db_profile: pre # This points to your main adapter
+```
 
+You can now create a python script in `models/`
+
+We will continue with [Getting started](https://github.com/fal-ai/fal#getting-started).
+
+e.g. `orders_forecast.py`
+
+```python
+
+```
 
 
 # Run fal locally
 
-[Getting started](https://github.com/fal-ai/fal#getting-started)
 
 [Quickstart](https://docs.fal.ai/dbt-fal/quickstart)
 
