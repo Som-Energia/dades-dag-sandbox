@@ -7,7 +7,7 @@ from util_tasks.t_update_docker_image import build_update_image_task
 from docker.types import Mount, DriverConfig
 from datetime import datetime, timedelta
 from airflow.models import Variable
-from urllib.parse import urlparse
+from rfc3986 import urlparse
 from pathlib import Path
 
 my_email = Variable.get("fail_email")
@@ -41,7 +41,7 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
 
     # fragile dbapi to user-password combination
     parsed_dbapi = urlparse('{{ var.value.puppis_sandbox_db }}')
-    db_user,db_password = parsed_dbapi.split(':')
+    db_user,db_password = parsed_dbapi.userinfo.split(':')
     db_host = parsed_dbapi.host
     db_port = parsed_dbapi.port
     db_name = Path(parsed_dbapi.path).name
