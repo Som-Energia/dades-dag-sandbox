@@ -40,7 +40,10 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     task_update_image = build_update_image_task(dag=dag, repo_name=repo_name)
 
     # fragile dbapi to user-password combination
-    parsed_dbapi = urlparse('{{ var.value.puppis_sandbox_db }}')
+
+    dbapi = '{{ var.value.puppis_sandbox_db }}'
+    dbapi = 'postgresql://somuser:eew@puppis.somenergia.lan:5432/sandbox'
+    parsed_dbapi = urlparse(dbapi)
     print(parsed_dbapi)
     assert parsed_dbapi
 
