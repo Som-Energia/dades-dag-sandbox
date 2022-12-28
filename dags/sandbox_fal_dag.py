@@ -7,6 +7,8 @@ from util_tasks.t_update_docker_image import build_update_image_task
 from docker.types import Mount, DriverConfig
 from datetime import datetime, timedelta
 from airflow.models import Variable
+from urllib.parse import urlparse
+from pathlib import Path
 
 my_email = Variable.get("fail_email")
 addr = Variable.get("repo_server_url")
@@ -37,13 +39,26 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     task_branch_pull_ssh = build_branch_pull_ssh_task(dag=dag, task_name='fal_task', repo_name=repo_name)
     task_update_image = build_update_image_task(dag=dag, repo_name=repo_name)
 
+    # fragile dbapi to user-password combination
+    parsed_dbapi = urlparse('{{ var.value.puppis_sandbox_db }}')
+    db_user,db_password = parsed_dbapi.split(':')
+    db_host = parsed_dbapi.host
+    db_port = parsed_dbapi.port
+    db_name = Path(parsed_dbapi.path).name
+
+    assert db_user
+    assert db_password
+    assert db_host
+    assert db_port
+    assert db_name
+
     fal_task = DockerOperator(
         api_version='auto',
         task_id='fal_task',
         docker_conn_id='somenergia_registry',
         image='{}/{}-requirements:latest'.format('{{ conn.somenergia_registry.host }}',repo_name),
         working_dir=f'/repos/{repo_name}/dbt_dades_sandbox',
-        command='DBUSER="{{ var.value.puppis_prod_db }}" DBPASSWORD="{{ var.value.puppis_prod_db }}"  fal flow run --profile-dir config',
+        command='DBUSER="{}" DBPASSWORD="{}" DBHOST="{}" DBPORT="{}" DBNAME="{}" fal flow run --profile-dir config'.format(db_user, db_password, db_host, db_port, db_name),
         docker_url=Variable.get("generic_moll_url"),
         mounts=[mount_nfs],
         mount_tmp_dir=False,

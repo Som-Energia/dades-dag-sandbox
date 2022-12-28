@@ -6,11 +6,11 @@ dbt_dades_sandbox:
     pre:
       type: postgres
       threads: 1
-      host: puppis.somenergia.lan
-      port: 5432
+      host: "{{ env_var('DBHOST') }}"
+      port: "{{ env_var('DBPORT') }}"
       user: "{{ env_var('DBUSER') }}"
       password: "{{ env_var('DBPASSWORD') }}"
-      dbname: sandbox
+      dbname: "{{ env_var('DBNAME') }}"
       schema: dbt_pol
 
   target: pre
