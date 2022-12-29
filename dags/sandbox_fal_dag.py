@@ -47,7 +47,7 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
         'DBUSER': '{{ var.value.puppis_sandbox_db_user }}',
         'DBPASSWORD': '{{ var.value.puppis_sandbox_db_password }}',
         'DBHOST': 'puppis.somenergia.lan',
-        'DBPORT': '5432',
+        'DBPORT': 5432,
         'DBNAME': 'sandbox'
     }
 
