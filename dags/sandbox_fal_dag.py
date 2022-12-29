@@ -42,23 +42,23 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     # fragile dbapi to user-password combination
 
     # dbapi = '{{ var.value.puppis_sandbox_db }}'
-    db_user = '{{ var.value.puppis_sandbox_db_user }}'
-    db_password = '{{ var.value.puppis_sandbox_db_password }}'
 
-    db_host = 'puppis.somenergia.lan'
-    db_port = '5432'
-    db_name = 'sandbox'
-
-    command = 'DBUSER="{}" DBPASSWORD="{}" DBHOST="{}" DBPORT="{}" DBNAME="{}" fal flow run --profile-dir config'.format(db_user, db_password, db_host, db_port, db_name)
-    print(command)
+    environment = {
+        'DBUSER': '{{ var.value.puppis_sandbox_db_user }}',
+        'DBPASSWORD': '{{ var.value.puppis_sandbox_db_password }}',
+        'DBHOST': 'puppis.somenergia.lan',
+        'DBPORT': '5432',
+        'DBNAME': 'sandbox'
+    }
 
     fal_task = DockerOperator(
         api_version='auto',
         task_id='fal_task',
         docker_conn_id='somenergia_registry',
+        environment=environment,
         image='{}/{}-requirements:latest'.format('{{ conn.somenergia_registry.host }}',repo_name),
         working_dir=f'/repos/{repo_name}/dbt_dades_sandbox',
-        command=command,
+        command='fal flow run --profile-dir config',
         docker_url=Variable.get("generic_moll_url"),
         mounts=[mount_nfs],
         mount_tmp_dir=False,
