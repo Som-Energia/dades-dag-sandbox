@@ -42,7 +42,8 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     # fragile dbapi to user-password combination
 
     dbapi = '{{ var.value.puppis_sandbox_db }}'
-    dbapi = 'postgresql://somuser:ees%3Fe@puppis.somenergia.lan:5432/sandbox'
+    print(dbapi)
+    # dbapi = 'postgresql://somuser:ees%3Fe@puppis.somenergia.lan:5432/sandbox'
     parsed_dbapi = urlparse(dbapi)
     print(parsed_dbapi)
     assert parsed_dbapi
@@ -62,13 +63,16 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     assert db_port
     assert db_name
 
+    command = 'DBUSER="{}" DBPASSWORD="{}" DBHOST="{}" DBPORT="{}" DBNAME="{}" fal flow run --profile-dir config'.format(db_user, db_password, db_host, db_port, db_name)
+    print(command)
+
     fal_task = DockerOperator(
         api_version='auto',
         task_id='fal_task',
         docker_conn_id='somenergia_registry',
         image='{}/{}-requirements:latest'.format('{{ conn.somenergia_registry.host }}',repo_name),
         working_dir=f'/repos/{repo_name}/dbt_dades_sandbox',
-        command='DBUSER="{}" DBPASSWORD="{}" DBHOST="{}" DBPORT="{}" DBNAME="{}" fal flow run --profile-dir config'.format(db_user, db_password, db_host, db_port, db_name),
+        command=command,
         docker_url=Variable.get("generic_moll_url"),
         mounts=[mount_nfs],
         mount_tmp_dir=False,
