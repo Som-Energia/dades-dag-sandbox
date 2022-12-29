@@ -41,27 +41,13 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
 
     # fragile dbapi to user-password combination
 
-    dbapi = '{{ var.value.puppis_sandbox_db }}'
-    print(dbapi)
-    # dbapi = 'postgresql://somuser:ees%3Fe@puppis.somenergia.lan:5432/sandbox'
-    parsed_dbapi = urlparse(dbapi)
-    print(parsed_dbapi)
-    assert parsed_dbapi
+    # dbapi = '{{ var.value.puppis_sandbox_db }}'
+    db_user = '{{ var.value.puppis_sandbox_db_user }}'
+    db_password = '{{ var.value.puppis_sandbox_db_password }}'
 
-    if len(parsed_dbapi.netloc.split('@')) != 2:
-        raise Exception(parsed_dbapi.netloc)
-
-    userinfo,hostinfo = parsed_dbapi.netloc.split('@')
-
-    db_host, db_port = hostinfo.split(':')
-    db_user, db_password = userinfo.split(':')
-    db_name = Path(parsed_dbapi.path).name
-
-    assert db_user
-    assert db_password
-    assert db_host
-    assert db_port
-    assert db_name
+    db_host = 'puppis.somenergia.lan'
+    db_port = '5432'
+    db_name = 'sandbox'
 
     command = 'DBUSER="{}" DBPASSWORD="{}" DBHOST="{}" DBPORT="{}" DBNAME="{}" fal flow run --profile-dir config'.format(db_user, db_password, db_host, db_port, db_name)
     print(command)
