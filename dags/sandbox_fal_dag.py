@@ -42,10 +42,13 @@ with DAG(dag_id='dades_sandbox_fal_dag', start_date=datetime(2020,3,20), schedul
     # fragile dbapi to user-password combination
 
     dbapi = '{{ var.value.puppis_sandbox_db }}'
-    dbapi = 'postgresql://somuser:eew@puppis.somenergia.lan:5432/sandbox'
+    dbapi = 'postgresql://somuser:ees%3Fe@puppis.somenergia.lan:5432/sandbox'
     parsed_dbapi = urlparse(dbapi)
     print(parsed_dbapi)
     assert parsed_dbapi
+
+    if len(parsed_dbapi.netloc.split('@')) != 2:
+        raise Exception(parsed_dbapi.netloc)
 
     userinfo,hostinfo = parsed_dbapi.netloc.split('@')
 
