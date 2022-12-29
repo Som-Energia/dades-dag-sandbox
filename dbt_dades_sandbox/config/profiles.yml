@@ -7,7 +7,7 @@ dbt_dades_sandbox:
       type: postgres
       threads: 1
       host: "{{ env_var('DBHOST') }}"
-      port: {{ env_var('DBPORT') }}
+      port: "{{ env_var('DBPORT') | as_number }}"
       user: "{{ env_var('DBUSER') }}"
       password: "{{ env_var('DBPASSWORD') }}"
       dbname: "{{ env_var('DBNAME') }}"
